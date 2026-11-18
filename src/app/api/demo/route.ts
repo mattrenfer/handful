@@ -19,6 +19,18 @@ import { env } from '@/lib/env'
  * signed-in session, limited by RLS like any other.
  */
 
+/**
+ * GET /api/demo
+ *
+ * A cheap "are you there?" for an uptime monitor. It signs no one in and touches nothing.
+ * It lives in this file on purpose: it runs in the same server function as the demo sign-in,
+ * so a ping every few minutes keeps that function warm. Without it, the first demo click after
+ * a quiet spell waits 2–6 seconds for the function to start (a cold start); warm, it's ~0.4 s.
+ */
+export function GET() {
+    return new NextResponse('ok', { headers: { 'Cache-Control': 'no-store' } })
+}
+
 export async function POST(request: NextRequest) {
     // No NEXT_PUBLIC_ prefix on any of these, so they never reach the browser
     const { DEMO_EMAIL, DEMO_PASSWORD, SUPABASE_SERVICE_ROLE_KEY } = process.env
