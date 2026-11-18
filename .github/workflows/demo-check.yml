@@ -2,11 +2,12 @@ name: Check the demo works
 
 # The demo is what most visitors try first, and its failures are silent: the visitor sees
 # "demo unavailable" or an empty dashboard and leaves. This walks the same path a visitor
-# does, every hour, and fails (so GitHub emails the owner) if any step breaks.
+# does, on a schedule, and fails (so GitHub emails the owner) if any step breaks.
 #
 # One run proves: the site is up, Supabase is awake, the demo sign-in works (credentials and
 # service role key in Vercel), RLS lets the demo see its rows, and the nightly reset left data.
-# It uses only the public site, so it needs no secrets.
+# It uses only the public site, so it needs no secrets. GitHub delays and skips scheduled runs,
+# so "hourly" is really every few hours; the external uptime monitor covers the gaps.
 on:
     schedule:
         - cron: '17 * * * *' # every hour, off the top of the hour when GitHub is busiest
